@@ -1,0 +1,36 @@
+import { createContext, useContext, useReducer, useEffect } from "react";
+import reducer from "../Reducer/Filter_reducer";
+import GridView from "../Component/GridView";
+const FilterContext = createContext();
+
+const initialState = {
+  grid_view: false,
+};
+export const FilterContextProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  // to set the grid view
+  const setGridView = () => {
+    return dispatch({ type: "SET_GRID_VIEW" });
+  };
+
+  // to set the list view
+  const setListView = () => {
+    return dispatch({ type: "SET_LIST_VIEW" });
+  };
+  return (
+    <FilterContext.Provider
+      value={{
+        ...state,
+        setGridView,
+        setListView,
+      }}
+    >
+      {children}
+    </FilterContext.Provider>
+  );
+};
+
+export const useFilterContext = () => {
+  return useContext(FilterContext);
+};
